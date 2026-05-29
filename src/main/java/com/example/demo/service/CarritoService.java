@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.client.CatalogoClient;
+import com.example.demo.client.UsuarioClient;
 import com.example.demo.dto.CarritoRequestDTO;
 import com.example.demo.dto.CarritoResponseDTO;
 import com.example.demo.dto.ItemCarritoRequestDTO;
@@ -23,6 +25,10 @@ public class CarritoService {
     private final CarritoRepository carritoRepository;
 
     private final ItemCarritoRepository itemCarritoRepository;
+
+    private final CatalogoClient catalogoClient;
+    private final UsuarioClient usuarioClient;
+
 
     private ItemCarritoResponseDTO mapItemToDTO(ItemCarrito item){
         return new ItemCarritoResponseDTO(
@@ -62,6 +68,10 @@ public class CarritoService {
     }
 
     public CarritoResponseDTO guardar(CarritoRequestDTO dto) {
+        var usuarioRemoto = usuarioClient.obtenerUsuarioPorId(dto.getIdUsuario());
+        if (usuarioRemoto == null) {
+            throw new RuntimeException("El usuario con ID " + dto.getIdUsuario() + " no existe.");
+        }
         Carrito carrito = new Carrito();
         carrito.setIdUsuario(dto.getIdUsuario());
         carrito.setFechaCreacion(LocalDateTime.now());
@@ -89,6 +99,11 @@ public class CarritoService {
     }
 
     public ItemCarritoResponseDTO agregarItemAlCarrito(Long idCarrito, ItemCarritoRequestDTO dto) {
+        var productoRemoto = catalogoClient.obtenerProductoPorId(dto.getIdProducto());
+
+        if (productoRemoto == null) {
+            throw new RuntimeException("El producto con ID " + dto.getIdProducto() + " no existe en el catálogo.");
+        }
         Carrito carrito = carritoRepository.findById(idCarrito)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado con ID: " + idCarrito));
 
