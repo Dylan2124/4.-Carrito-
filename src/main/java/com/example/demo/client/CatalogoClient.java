@@ -10,4 +10,6 @@ public interface CatalogoClient {
     @GetMapping("/{id}")
     ProductoResponseDTO obtenerProductoPorId(@PathVariable("id") Long idProducto);
 
+
+
 }

@@ -30,28 +30,28 @@ public class CarritoService {
     private final UsuarioClient usuarioClient;
 
 
-    private ItemCarritoResponseDTO mapItemToDTO(ItemCarrito item){
+    private ItemCarritoResponseDTO mapItemToDTO(ItemCarrito item) {
         return new ItemCarritoResponseDTO(
                 item.getIdItem(),
-                item.getIdCarrito(),
+                item.getCarrito().getIdCarrito(),
                 item.getIdProducto(),
                 item.getCantidad()
         );
     }
 
-    private CarritoResponseDTO mapToCarritoDTO(Carrito carrito){
+    private CarritoResponseDTO mapToCarritoDTO(Carrito carrito) {
         List<ItemCarritoResponseDTO> itemsDTO = itemCarritoRepository.findByIdCarrito(carrito.getIdCarrito())
                 .stream()
                 .map(this::mapItemToDTO)
                 .collect(Collectors.toList());
 
-            return new CarritoResponseDTO(
-                    carrito.getIdCarrito(),
-                    carrito.getIdUsuario(),
-                    carrito.getFechaCreacion(),
-                    itemsDTO
+        return new CarritoResponseDTO(
+                carrito.getIdCarrito(),
+                carrito.getIdUsuario(),
+                carrito.getFechaCreacion(),
+                itemsDTO
 
-            );
+        );
     }
 
     public List<CarritoResponseDTO> obtenerTodos() {
@@ -115,7 +115,7 @@ public class CarritoService {
             item.setCantidad(item.getCantidad() + dto.getCantidad());
         } else {
             item = new ItemCarrito();
-            item.setIdCarrito(idCarrito);
+            item.setCarrito(carrito);
             item.setIdProducto(dto.getIdProducto());
             item.setCantidad(dto.getCantidad());
         }
@@ -123,4 +123,22 @@ public class CarritoService {
         ItemCarrito guardado = itemCarritoRepository.save(item);
         return mapItemToDTO(guardado);
     }
+
+    public void vaciarCarrito(Long idCarrito) {
+        Carrito carrito = carritoRepository.findById(idCarrito)
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado con ID: " + idCarrito));
+
+        itemCarritoRepository.deleteAll(itemCarritoRepository.findByIdCarrito(idCarrito));
+    }
+
+    public String procesarPago(Long idCarrito) {
+        Carrito carrito = carritoRepository.findById(idCarrito)
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado con ID: " + idCarrito));
+
+        int cantidadItems = itemCarritoRepository.findByIdCarrito(idCarrito).size();
+        return "Pago procesado exitosamente para el carrito " + idCarrito
+                + " del usuario " + carrito.getIdUsuario()
+                + " con " + cantidadItems + " items";
+    }
+
 }

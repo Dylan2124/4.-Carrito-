@@ -12,4 +12,6 @@ public class CarritoRequestDTO {
 
     @NotNull(message = "EL ID del usuario es obligatorio")
     private Long idUsuario;
+
+
 }

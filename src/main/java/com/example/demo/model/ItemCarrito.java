@@ -17,12 +17,13 @@ public class ItemCarrito {
     @Column(name = "id_item")
     private Long idItem;
 
-    @Column(name = "id_carrito", nullable = false)
-    private Long idCarrito;
-
-    @Column(name = "id_producto",nullable = false)
-    private Long idProducto;
+    @Column(name = "id_producto", nullable = false)
+    private Long idProducto;  // Solo número, NO es relación JPA
 
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_carrito", nullable = false)
+    private Carrito carrito;
 }

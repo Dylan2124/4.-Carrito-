@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,9 +23,13 @@ public class Carrito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCarrito;
 
-    @Column(name = "id_usuario",nullable = false)
+    @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
 
-    @Column(name = "fecha_creacion",nullable = false)
+
+    @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
+
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ItemCarrito> items = new ArrayList<>();
 }
