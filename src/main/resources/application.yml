@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: ms-carrito
+  datasource:
+    url: jdbc:mysql://localhost:3306/carrito_db
+    username: root
+    password: ""
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+
+server:
+  port: 8084
+
+# ========== CONFIGURACIÓN EUREKA ==========
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/  # URL del Servidor Eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    hostname: localhost
+    prefer-ip-address: false
+    health-check-url: http://localhost:8084/actuator/health # Apuntando al puerto 8084
+    status-page-url: http://localhost:8084/actuator/info    # Apuntando al puerto 8084
+
+# ========== ACTUATOR (Para Health Check) ==========
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# ========== LOGGING ==========
+logging:
+  level:
+    root: INFO
+    # Cambia 'com.TuPaquete.Carrito' por el paquete real de tu proyecto de carrito
+    com.TuPaquete.Carrito: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
