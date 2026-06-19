@@ -23,7 +23,7 @@ public class CarritoResponseDTO extends RepresentationModel<CarritoResponseDTO> 
     @Schema(description = "ID único del carrito"
             , example = "1"
     )
-    private Long idCarrito;
+    private Long idCarrito; //
     @Schema(description = "ID del usuario propietario del carrito"
             , example = "42"
     )
