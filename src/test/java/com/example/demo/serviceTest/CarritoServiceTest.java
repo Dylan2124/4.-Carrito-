@@ -83,7 +83,7 @@ class CarritoServiceTest {
         // Mock: simulamos que el producto existe en catálogo
         when(catalogoClient.obtenerProductoPorId(idProducto)).thenReturn(mock(ProductoResponseDTO.class));
         // Mock: simulamos que el item existe en el repositorio
-        when(itemCarritoRepository.findByIdCarritoAndIdProducto(idCarrito, idProducto))
+        when(itemCarritoRepository.findByCarrito_IdCarritoAndIdProducto(idCarrito, idProducto))
                 .thenReturn(Optional.of(itemExistente));
 
         // Mock: simulamos el guardado del item actualizado
@@ -109,7 +109,7 @@ class CarritoServiceTest {
         // Verificar que se llamaron los métodos esperados
         verify(carritoRepository, times(1)).findById(idCarrito);
         verify(catalogoClient, times(1)).obtenerProductoPorId(idProducto);
-        verify(itemCarritoRepository, times(1)).findByIdCarritoAndIdProducto(idCarrito, idProducto);
+        verify(itemCarritoRepository, times(1)).findByCarrito_IdCarritoAndIdProducto(idCarrito, idProducto);
         verify(itemCarritoRepository, times(1)).save(any(ItemCarrito.class));
     }
 
@@ -131,7 +131,7 @@ class CarritoServiceTest {
         // Mock: simulamos que el producto existe en catálogo
         when(catalogoClient.obtenerProductoPorId(idProductoNuevo)).thenReturn(mock(ProductoResponseDTO.class));
         // Mock: simulamos que el item NO existe (Optional.empty())
-        when(itemCarritoRepository.findByIdCarritoAndIdProducto(idCarrito, idProductoNuevo))
+        when(itemCarritoRepository.findByCarrito_IdCarritoAndIdProducto(idCarrito, idProductoNuevo))
                 .thenReturn(Optional.empty());
 
         // Mock: simulamos el guardado del item nuevo
@@ -157,7 +157,7 @@ class CarritoServiceTest {
         // Verificar que se llamaron los métodos esperados
         verify(carritoRepository, times(1)).findById(idCarrito);
         verify(catalogoClient, times(1)).obtenerProductoPorId(idProductoNuevo);
-        verify(itemCarritoRepository, times(1)).findByIdCarritoAndIdProducto(idCarrito, idProductoNuevo);
+        verify(itemCarritoRepository, times(1)).findByCarrito_IdCarritoAndIdProducto(idCarrito, idProductoNuevo);
         verify(itemCarritoRepository, times(1)).save(any(ItemCarrito.class));
     }
 
@@ -190,7 +190,7 @@ class CarritoServiceTest {
         Long idProducto = 100L;
         Integer cantidadInvalida = 0;
 
-        when(itemCarritoRepository.findByIdCarritoAndIdProducto(idCarrito, idProducto))
+        when(itemCarritoRepository.findByCarrito_IdCarritoAndIdProducto(idCarrito, idProducto))
                 .thenReturn(Optional.of(itemExistente));
 
         // ========== ACT & ASSERT ==========

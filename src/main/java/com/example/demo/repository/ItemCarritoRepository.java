@@ -9,9 +9,9 @@ import java.util.Optional;
 @Repository
 public interface ItemCarritoRepository extends JpaRepository<ItemCarrito, Long> {
 
-    List<ItemCarrito> findByIdCarrito(Long idCarrito);
+    List<ItemCarrito> findByCarrito_IdCarrito(Long idCarrito);
 
-    Optional<ItemCarrito> findByIdCarritoAndIdProducto(Long idCarrito, Long idProducto);
+    Optional<ItemCarrito> findByCarrito_IdCarritoAndIdProducto(Long idCarrito, Long idProducto);
 
 
 }

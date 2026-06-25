@@ -32,6 +32,17 @@ eureka:
     health-check-url: http://localhost:8084/actuator/health # Apuntando al puerto 8084
     status-page-url: http://localhost:8084/actuator/info    # Apuntando al puerto 8084
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+  servers:
+    - url: http://localhost:8084
+      description: Servidor Local de Carrito
+
 # ========== ACTUATOR (Para Health Check) ==========
 management:
   endpoints:

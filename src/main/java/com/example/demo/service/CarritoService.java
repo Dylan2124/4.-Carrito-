@@ -40,7 +40,7 @@ public class CarritoService {
     }
 
     private CarritoResponseDTO mapToCarritoDTO(Carrito carrito) {
-        List<ItemCarritoResponseDTO> itemsDTO = itemCarritoRepository.findByIdCarrito(carrito.getIdCarrito())
+        List<ItemCarritoResponseDTO> itemsDTO = itemCarritoRepository.findByCarrito_IdCarrito(carrito.getIdCarrito())
                 .stream()
                 .map(this::mapItemToDTO)
                 .collect(Collectors.toList());
@@ -84,7 +84,7 @@ public class CarritoService {
         if (nuevaCantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a cero");
         }
-        ItemCarrito item = itemCarritoRepository.findByIdCarritoAndIdProducto(idCarrito, idProducto)
+        ItemCarrito item = itemCarritoRepository.findByCarrito_IdCarritoAndIdProducto(idCarrito, idProducto)
                 .orElseThrow(() -> new RuntimeException("El producto no existe en este carrito"));
         item.setCantidad(nuevaCantidad);
         ItemCarrito actualizado = itemCarritoRepository.save(item);
@@ -92,7 +92,7 @@ public class CarritoService {
     }
 
     public void eliminarItemDelCarrito(Long idCarrito, Long idProducto) {
-        ItemCarrito item = itemCarritoRepository.findByIdCarritoAndIdProducto(idCarrito, idProducto)
+        ItemCarrito item = itemCarritoRepository.findByCarrito_IdCarritoAndIdProducto(idCarrito, idProducto)
                 .orElseThrow(() -> new RuntimeException("El producto no existe en este carrito"));
 
         itemCarritoRepository.delete(item);
@@ -107,7 +107,7 @@ public class CarritoService {
         Carrito carrito = carritoRepository.findById(idCarrito)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado con ID: " + idCarrito));
 
-        Optional<ItemCarrito> itemExistente = itemCarritoRepository.findByIdCarritoAndIdProducto(idCarrito, dto.getIdProducto());
+        Optional<ItemCarrito> itemExistente = itemCarritoRepository.findByCarrito_IdCarritoAndIdProducto(idCarrito, dto.getIdProducto());
 
         ItemCarrito item;
         if (itemExistente.isPresent()) {
@@ -128,14 +128,14 @@ public class CarritoService {
         Carrito carrito = carritoRepository.findById(idCarrito)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado con ID: " + idCarrito));
 
-        itemCarritoRepository.deleteAll(itemCarritoRepository.findByIdCarrito(idCarrito));
+        itemCarritoRepository.deleteAll(itemCarritoRepository.findByCarrito_IdCarrito(idCarrito));
     }
 
     public String procesarPago(Long idCarrito) {
         Carrito carrito = carritoRepository.findById(idCarrito)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado con ID: " + idCarrito));
 
-        int cantidadItems = itemCarritoRepository.findByIdCarrito(idCarrito).size();
+        int cantidadItems = itemCarritoRepository.findByCarrito_IdCarrito(idCarrito).size();
         return "Pago procesado exitosamente para el carrito " + idCarrito
                 + " del usuario " + carrito.getIdUsuario()
                 + " con " + cantidadItems + " items";
