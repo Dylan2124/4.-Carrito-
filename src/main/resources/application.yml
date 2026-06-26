@@ -42,9 +42,9 @@ springdoc:
     path: /api/carrito/swagger-ui.html
 
   servers:
-    - url: http://localhost:8080
+    - url: /
       description: Servidor a través del Gateway (Pruebas de Seguridad)
-    - url: http://localhost:8084
+    - url: http://localhost:8080
       description: Servidor Local Directo (ms-carrito)
 
 # ========== ACTUATOR (Para Health Check) ==========
