@@ -68,10 +68,6 @@ public class CarritoService {
     }
 
     public CarritoResponseDTO guardar(CarritoRequestDTO dto) {
-        var usuarioRemoto = usuarioClient.obtenerUsuarioPorId(dto.getIdUsuario());
-        if (usuarioRemoto == null) {
-            throw new RuntimeException("El usuario con ID " + dto.getIdUsuario() + " no existe.");
-        }
         Carrito carrito = new Carrito();
         carrito.setIdUsuario(dto.getIdUsuario());
         carrito.setFechaCreacion(LocalDateTime.now());

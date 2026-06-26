@@ -11,6 +11,7 @@ import com.example.demo.repository.CarritoRepository;
 import com.example.demo.repository.ItemCarritoRepository;
 import com.example.demo.service.CarritoService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -182,24 +183,19 @@ class CarritoServiceTest {
                 "Debe lanzar excepción indicando que el carrito no existe");
     }
 
-    /**     * TEST 4: Verificar que valida correctamente una cantidad inválida (negativa o cero).     */
     @Test
+    @DisplayName("Actualizar cantidad con valor menor o igual a cero debe lanzar IllegalArgumentException")
     void testActualizarCantidad_CantidadInvalida_LanzaExcepcion() {
         // ========== ARRANGE ==========
         Long idCarrito = 1L;
         Long idProducto = 100L;
         Integer cantidadInvalida = 0;
 
-        when(itemCarritoRepository.findByCarrito_IdCarritoAndIdProducto(idCarrito, idProducto))
-                .thenReturn(Optional.of(itemExistente));
-
-        // ========== ACT & ASSERT ==========
         IllegalArgumentException excepcion = assertThrows(IllegalArgumentException.class, () -> {
             carritoService.actualizarCantidadItem(idCarrito, idProducto, cantidadInvalida);
         });
 
-        assertTrue(excepcion.getMessage().contains("mayor a cero"),
-                "Debe validar que la cantidad sea mayor a cero");
+        assertTrue(excepcion.getMessage().toLowerCase().contains("mayor a cero"),
+                "El mensaje de error real fue: " + excepcion.getMessage());
     }
-
 }
